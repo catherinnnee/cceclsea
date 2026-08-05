@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Informatika - Chelsea Catherine Pangestu</title>
+    <meta name="description" content="Artikel Informatika." />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+        href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;500;600;700;800&family=Playfair+Display:wght@600;700;800&family=Poppins:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet" />
+
+    <!-- FontAwesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" />
+
+    <!-- Tailwind Config (Tema Hijau Sage & Komplementer) -->
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        nunito: ['Nunito', 'sans-serif'],
+                        playfair: ['Playfair Display', 'serif'],
+                        poppins: ['Poppins', 'sans-serif'],
+                    },
+                    colors: {
+                        sage: { 50: '#f4fbf7', 100: '#e3f6ea', 200: '#c6ead5', 300: '#9ad7b5', 400: '#67be8f', 500: '#42a06f', 600: '#2f8055', 700: '#276645', 800: '#225239', 900: '#1d4431' },
+                        peach: { 50: '#fff9f5', 100: '#ffefe5', 200: '#ffdcc2', 300: '#ffc199', 400: '#ff9866', 500: '#fe7439', 600: '#ef561c' },
+                        lavender: { 50: '#f5f3ff', 100: '#ede9fe', 200: '#ddd6fe', 300: '#c4b5fd', 400: '#a78bfa', 500: '#8b5cf6' },
+                    },
+                    animation: {
+                        'float': 'float 4s ease-in-out infinite',
+                        'float-delayed': 'float 4s ease-in-out 2s infinite',
+                        'fade-in-up': 'fadeInUp 0.6s ease-out forwards',
+                        'typing': 'typing 2s steps(40, end), blink .75s step-end infinite',
+                        'pulse-slow': 'pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'wiggle': 'wiggle 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        float: { '0%,100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-12px)' } },
+                        fadeInUp: {
+                            '0%': { opacity: '0', transform: 'translateY(20px)' },
+                            '100%': { opacity: '1', transform: 'translateY(0)' },
+                        },
+                        typing: {
+                            from: { width: '0' },
+                            to: { width: '100%' }
+                        },
+                        blink: {
+                            'from, to': { borderColor: 'transparent' },
+                            '50%': { borderColor: '#42a06f' }
+                        },
+                        wiggle: {
+                            '0%, 100%': { transform: 'rotate(-10deg)' },
+                            '50%': { transform: 'rotate(10deg)' },
+                        }
+                    },
+                },
+            },
+        };
+    </script>
+
+    <style>
+        body {
+            font-family: 'Nunito', sans-serif;
+            overflow-x: hidden;
+            background: linear-gradient(135deg, #f4fbf7 0%, #ffefe5 50%, #f5f3ff 100%);
+            background-attachment: fixed;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f4fbf7;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #9ad7b5;
+            border-radius: 99px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #67be8f;
+        }
+
+        /* Glassmorphism */
+        .glass {
+            background: rgba(255, 255, 255, 0.65);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.05);
+        }
+
+        .glass-card-hover {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.3s;
+        }
+
+        .glass-card-hover:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 35px rgba(66, 160, 111, 0.15);
+            border-color: rgba(103, 190, 143, 0.4);
+        }
+
+        .gradient-text-green {
+            background: linear-gradient(90deg, #42a06f, #67be8f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* Background Blobs */
+        .blob-green {
+            position: fixed;
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(154, 215, 181, 0.6) 0%, transparent 70%);
+            top: -100px;
+            left: -100px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .blob-peach {
+            position: fixed;
+            width: 350px;
+            height: 350px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 193, 153, 0.5) 0%, transparent 70%);
+            bottom: -50px;
+            right: -50px;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .blob-lavender {
+            position: fixed;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(196, 181, 253, 0.4) 0%, transparent 70%);
+            top: 40%;
+            left: 60%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        /* ================= DARK MODE OVERRIDES ================= */
+        body.dark-mode {
+            background: linear-gradient(135deg, #0f172a 100%, #1e1b4b 50%, #311026 0%) !important;
+            background-attachment: fixed !important;
+            color: #f3f4f6 !important;
+        }
+
+        body.dark-mode .text-gray-800,
+        body.dark-mode .text-gray-700,
+        body.dark-mode .text-gray-600,
+        body.dark-mode .text-sage-800,
+        body.dark-mode .text-sage-700,
+        body.dark-mode .text-sage-600 {
+            color: #f3f4f6 !important;
+        }
+
+        body.dark-mode .text-gray-500,
+        body.dark-mode .text-sage-500,
+        body.dark-mode .text-sage-400 {
+            color: #cbd5e1 !important;
+        }
+
+        body.dark-mode .glass {
+            background: rgba(30, 41, 59, 0.65) !important;
+            border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5) !important;
+        }
+
+        body.dark-mode .bg-white\/50,
+        body.dark-mode .bg-white\/60,
+        body.dark-mode .bg-white\/70,
+        body.dark-mode .bg-white\/80,
+        body.dark-mode [class*="bg-sage-"] {
+            background-color: rgba(51, 65, 85, 0.5) !important;
+            border-color: rgba(255, 255, 255, 0.08) !important;
+        }
+
+        body.dark-mode .bg-white {
+            background-color: #1e293b !important;
+            border-color: rgba(255, 255, 255, 0.1) !important;
+        }
+
+        body.dark-mode header.glass {
+            background: rgba(15, 23, 42, 0.85) !important;
+        }
+
+        body.dark-mode h1.font-playfair,
+        body.dark-mode .gradient-text-green,
+        body.dark-mode h2.gradient-text-green,
+        body.dark-mode h3.font-playfair {
+            background: linear-gradient(135deg, #ff9866, #c4b5fd) !important;
+            -webkit-background-clip: text !important;
+            -webkit-text-fill-color: transparent !important;
+            background-clip: text !important;
+        }
+
+        body.dark-mode .blob-green {
+            background: radial-gradient(circle, rgba(167, 139, 250, 0.2) 0%, transparent 70%);
+        }
+
+        body.dark-mode .blob-peach {
+            background: radial-gradient(circle, rgba(255, 152, 102, 0.2) 0%, transparent 70%);
+        }
+
+        body.dark-mode .blob-lavender {
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.15) 0%, transparent 70%);
+        }
+    </style>
+</head>
+
+<body class="min-h-screen text-gray-800">
+
+    <!-- ELEMEN TERBANG TERSEBAR -->
+    <div class="fixed inset-0 pointer-events-none z-0 overflow-hidden hidden lg:block">
+        <span class="absolute left-6 top-[15%] text-3xl animate-float opacity-80">☘️</span>
+        <span class="absolute left-12 top-[45%] text-3xl animate-wiggle opacity-75">💖</span>
+        <span class="absolute left-8 top-[75%] text-4xl animate-float-delayed opacity-85">🐯</span>
+        <span class="absolute right-8 top-[25%] text-3xl animate-float-delayed opacity-80">🌸</span>
+        <span class="absolute right-12 top-[55%] text-3xl animate-float opacity-75">🐦</span>
+        <span class="absolute right-6 top-[85%] text-3xl animate-wiggle opacity-80">☘️</span>
+    </div>
+
+    <!-- Efek Latar Belakang -->
+    <div class="blob-green animate-pulse-slow"></div>
+    <div class="blob-peach animate-pulse-slow" style="animation-delay: 2s;"></div>
+    <div class="blob-lavender animate-pulse-slow" style="animation-delay: 1s;"></div>
+
+    <!-- TOP NAVBAR ESTETIK -->
+    <header
+        class="fixed top-0 left-0 right-0 z-50 glass px-4 lg:px-8 py-3 flex items-center justify-between shadow-sm overflow-hidden">
+        <span class="absolute top-2 right-1/4 text-2xl animate-float opacity-70 pointer-events-none">&#10024;</span>
+        <span class="absolute top-4 left-1/3 text-xl animate-wiggle opacity-60 pointer-events-none">&#127807;</span>
+        <span
+            class="absolute top-3 right-12 text-2xl animate-float-delayed opacity-80 pointer-events-none">&#127800;</span>
+        <span class="absolute -bottom-2 left-1/2 text-3xl animate-pulse opacity-40 pointer-events-none">&#127896;</span>
+
+        <a href="UJI COBA 7.html" .html"
+            class="flex items-center gap-3 cursor-pointer transition-transform hover:scale-105 relative z-10 text-decoration-none">
+            <img src="c:\Users\chhcp\Downloads\woww2.jpeg"
+                class="w-10 h-10 rounded-full border-2 border-sage-300 shadow-sm object-cover">
+            <div>
+                <p class="font-playfair font-bold text-sage-700 leading-tight">&#10023; Chelsea Website</p>
+                <p class="text-xs text-sage-500 font-medium">Student & Creator</p>
+            </div>
+        </a>
+
+        <div class="flex items-center gap-4 relative z-10">
+            <button id="theme-toggle"
+                class="text-sage-600 text-xl bg-white/50 p-2.5 rounded-xl shadow-sm border border-sage-100 focus:outline-none hover:bg-sage-100 hover:scale-105 transition-all">
+                <i class="fa-solid fa-moon" id="theme-icon"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- WRAPPER UTAMA -->
+    <main class="relative z-10 px-6 md:px-12 max-w-5xl mx-auto pt-28 pb-12 min-h-screen">
+
+        <!-- ========================================== -->
+        <!-- HALAMAN 1: MENU DAFTAR TUGAS -->
+        <!-- ========================================== -->
+        <div id="menu-utama" class="fade-in block">
+            <a href="UJI COBA 7.html"
+                class="inline-flex items-center gap-2 text-sage-700 font-bold mb-8 hover:text-sage-500 transition-colors">
+                <i class="fa-solid fa-arrow-left"></i> Kembali ke Dashboard
+            </a>
+
+            <h1 class="text-3xl font-extrabold text-sage-800 mb-2 font-playfair">Informatika</h1>
+            <p class="text-gray-500 mb-8">Kumpulan artikel, materi, dan analisis mata pelajaran Informatika.</p>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Kartu Artikel Keuangan (Existing) -->
+                <button onclick="bukaTugas('artikel-keuangan')"
+                    class="text-left bg-white p-6 rounded-2xl shadow-sm border border-gray-100 glass-card-hover group block w-full">
+                    <div
+                        class="w-12 h-12 bg-sage-100 text-sage-600 rounded-xl flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-newspaper"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-gray-800 mb-2">Artikel Keuangan</h2>
+                    <p class="text-sm text-gray-500">Peran Informatika di Industri Keuangan.</p>
+                </button>
+
+                <!-- Kartu Artikel Informatika -->
+                <button onclick="bukaTugas('artikel-informatika')"
+                    class="text-left bg-white p-6 rounded-2xl shadow-sm border border-gray-100 glass-card-hover group block w-full">
+                    <div
+                        class="w-12 h-12 bg-sage-100 text-sage-600 rounded-xl flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-laptop-code"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-gray-800 mb-2">Artikel Informatika</h2>
+                    <p class="text-sm text-gray-500">Pengantar ilmu informatika dan perannya.</p>
+                </button>
+
+                <!-- Kartu Sistem Digital -->
+                <button onclick="bukaTugas('sistem-digital')"
+                    class="text-left bg-white p-6 rounded-2xl shadow-sm border border-gray-100 glass-card-hover group block w-full">
+                    <div
+                        class="w-12 h-12 bg-sage-100 text-sage-600 rounded-xl flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-microchip"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-gray-800 mb-2">Sistem Digital</h2>
+                    <p class="text-sm text-gray-500">Materi pengenalan tentang Sistem Digital.</p>
+                </button>
+
+                <!-- Kartu Kriptografi -->
+                <button onclick="bukaTugas('kriptografi')"
+                    class="text-left bg-white p-6 rounded-2xl shadow-sm border border-gray-100 glass-card-hover group block w-full">
+                    <div
+                        class="w-12 h-12 bg-sage-100 text-sage-600 rounded-xl flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-key"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-gray-800 mb-2">Kriptografi</h2>
+                    <p class="text-sm text-gray-500">Materi pengenalan tentang Kriptografi.</p>
+                </button>
+
+                <!-- Kartu Analisis Film -->
+                <button onclick="bukaTugas('imitation-game')"
+                    class="text-left bg-white p-6 rounded-2xl shadow-sm border border-gray-100 glass-card-hover group block w-full">
+                    <div
+                        class="w-12 h-12 bg-sage-100 text-sage-600 rounded-xl flex items-center justify-center text-xl mb-4 group-hover:scale-110 transition-transform">
+                        <i class="fa-solid fa-film"></i>
+                    </div>
+                    <h2 class="text-xl font-bold text-gray-800 mb-2">The Imitation Game</h2>
+                    <p class="text-sm text-gray-500">Analisis film The Imitation Game.</p>
+                </button>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- HALAMAN 2: ARTIKEL KEUANGAN (Existing) -->
+        <!-- ========================================== -->
+        <div id="tugas-artikel-keuangan" class="hidden">
+            <button onclick="kembaliKeMenu()"
+                class="inline-flex items-center gap-2 text-sage-700 font-bold mb-8 hover:text-sage-500">
+                <i class="fa-solid fa-arrow-left"></i> Kembali ke Daftar Tugas
+            </button>
+            <div
+                class="bg-white p-8 md:p-10 rounded-2xl shadow-sm border border-gray-100 relative glass-card-hover border-t-4 border-t-sage-400">
+                <!-- Metadata Artikel -->
+                <div
+                    class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6 pb-4 border-b border-sage-200">
+                    <div class="flex items-center gap-3">
+                        <span class="bg-sage-100 text-sage-700 text-xs font-bold px-3 py-1.5 rounded-md">
+                            <i class="fa-solid fa-newspaper mr-1"></i> Artikel Utama
+                        </span>
+                    </div>
+                    <div class="text-sm text-gray-500 font-semibold flex items-center gap-4">
+                        <span><i class="fa-solid fa-pen-nib text-sage-500 mr-1"></i> Chelsea Catherine Pangestu</span>
+                        <span><i class="fa-regular fa-calendar-days text-sage-500 mr-1"></i> 29 Juli 2026</span>
+                    </div>
+                </div>
+
+                <h1 class="text-3xl font-extrabold text-sage-800 mb-6 font-playfair">Peran Informatika dalam Membangun
+                    Masa Depan Industri Keuangan di Indonesia</h1>
+
+                <div class="text-gray-700 leading-relaxed text-justify space-y-4">
+                    <p>Sektor keuangan di Indonesia sedang mengalami revolusi digital yang sangat pesat. Mulai dari
+                        sistem pembayaran tanpa kas (cashless), pasar saham digital, hingga analisis risiko perbankan
+                        modern, semuanya kini bergantung pada teknologi informasi. Dalam dunia finance hari ini,
+                        informatika bukan lagi sekadar instrumen pendukung, melainkan roda penggerak utama yang
+                        menentukan efisiensi, keamanan, dan keberlanjutan seluruh ekosistem keuangan nasional.</p>
+
+                    <h3 class="font-bold text-xl text-sage-700 mt-6 mb-2">Mengapa Informatika Berperan Vital dalam Dunia
+                        Finance?</h3>
+                    <p>Pengelolaan keuangan modern melibatkan volume data transaksi yang sangat masif setiap detiknya.
+                        Tanpa sistem informatika yang andal, pemrosesan transaksi berkecepatan tinggi hampir tidak
+                        mungkin dilakukan secara akurat. Informatika menyediakan infrastruktur logika, pustaka
+                        algoritma, dan arsitektur basis data yang dibutuhkan untuk memproses transaksi finansial secara
+                        otomatis dan minim risiko kesalahan (human error).</p>
+                    <p>Penerapan <i>cloud computing</i> dan arsitektur <i>microservices</i> dalam ilmu informatika
+                        memungkinan bank serta lembaga keuangan memproses jutaan permintaan transaksi harian tanpa
+                        mengalami kelumpuhan sistem (downtime). Hal ini menjaga ketersediaan layanan keuangan secara
+                        terus-menerus (24/7) bagi masyarakat.</p>
+
+                    <h3 class="font-bold text-xl text-sage-700 mt-6 mb-2">Optimalisasi Sistem Keuangan Melalui Teknologi
+                        Informasi</h3>
+                    <p>Keandalan ilmu informatika dalam industri keuangan terlihat jelas pada beberapa bidang kunci:</p>
+                    <ul class="list-none space-y-4 ml-2">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-shield-halved text-sage-500 mt-1 text-xl"></i>
+                            <div>
+                                <span class="font-bold text-sage-800">Keamanan dan Deteksi Kecurangan (Fraud
+                                    Detection):</span>
+                                Algoritma pemrosesan data secara langsung (real-time data processing) digunakan untuk
+                                memantau pola transaksi yang mencurigakan, sehingga potensi pembobolan akun atau
+                                penipuan finansial dapat dicegah sebelum terjadi.
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-gears text-sage-500 mt-1 text-xl"></i>
+                            <div>
+                                <span class="font-bold text-sage-800">Otomatisasi Logika Bisnis:</span>
+                                Software engineering memungkinkan perhitungan suku bunga kompleks, simulasi pinjaman,
+                                hingga konversi mata uang asing dilakukan secara instan melalui sistem terintegrasi.
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-chart-line text-sage-500 mt-1 text-xl"></i>
+                            <div>
+                                <span class="font-bold text-sage-800">Manajemen Logika Algoritmik:</span>
+                                Dalam pasar modal dan investasi, sistem informatika memungkinkan eksekusi perdagangan
+                                saham otomatis (algorithmic trading) yang beroperasi berdasarkan kriteria analitis yang
+                                presisi.
+                            </div>
+                        </li>
+                    </ul>
+
+                    <h3 class="font-bold text-xl text-sage-700 mt-6 mb-2">Pemanfaatan Data Besar (Big Data) untuk
+                        Pengambilan Keputusan</h3>
+                    <p>Selain pemrosesan transaksi harian, penerapan Data Science dan pengolahan data besar (big data)
+                        dalam informatika memungkinkan lembaga keuangan untuk memprediksi tren pasar dan melakukan
+                        penilaian risiko kredit (credit scoring) secara akurat. Sistem dapat menganalisis riwayat
+                        transaksi secara mendalam untuk menentukan kelayakan finansial seorang nasabah secara lebih
+                        cepat dan objektif dibandingkan metode konvensional.</p>
+                    <p>Dunia finance modern tidak dapat dipisahkan dari perkembangan ilmu informatika. Integrasi sistem
+                        informasi yang kuat, pemrosesan data yang handal, serta protokol keamanan jaringan yang ketat
+                        menjadi fondasi utama dalam menciptakan layanan keuangan yang transparan, efisien, dan
+                        tepercaya. Dengan terus berkembangnya inovasi teknologi informasi, sektor keuangan di Indonesia
+                        dipastikan akan terus bertransformasi ke arah yang lebih maju dan inklusif.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- HALAMAN 3: ARTIKEL INFORMATIKA -->
+        <!-- ========================================== -->
+        <div id="tugas-artikel-informatika" class="hidden">
+            <button onclick="kembaliKeMenu()"
+                class="inline-flex items-center gap-2 text-sage-700 font-bold mb-8 hover:text-sage-500">
+                <i class="fa-solid fa-arrow-left"></i> Kembali ke Daftar Tugas
+            </button>
+            <div class="bg-white p-8 md:p-10 rounded-2xl shadow-sm border border-gray-100 relative">
+                <h1 class="text-3xl font-extrabold text-sage-800 mb-6 text-center font-playfair">Artikel: Informatika
+                </h1>
+                <div class="text-gray-700 leading-relaxed text-justify space-y-4">
+                    <p>Informatika merupakan bidang ilmu yang mempelajari dasar-dasar pengolahan informasi dengan
+                        memanfaatkan teknologi komputer. Pada dasarnya, informatika tidak hanya membahas tentang
+                        perangkat keras dan perangkat lunak, tetapi juga cara berpikir komputasional, logis, serta
+                        sistematis dalam menyelesaikan suatu permasalahan. Dasar informatika menjadi fondasi penting
+                        untuk memahami pemrograman, algoritma, jaringan komputer, hingga penerapan teknologi dalam
+                        kehidupan sehari-hari.</p>
+                    <p>Secara umum, informatika dapat diartikan sebagai ilmu yang membahas proses mengumpulkan,
+                        mengolah, menyimpan, dan menyebarkan informasi dengan bantuan komputer. Ilmu ini tidak hanya
+                        berhubungan dengan mesin, melainkan juga melibatkan manusia sebagai pengguna dan pencipta
+                        teknologi. Dengan mempelajari informatika, seseorang dapat memahami bagaimana teknologi dapat
+                        dimanfaatkan untuk mempermudah aktivitas dan menghasilkan inovasi baru.</p>
+                    <p>Informatika memiliki keterkaitan yang sangat erat dengan matematika. Hal ini karena matematika
+                        menyediakan dasar logika, struktur, dan konsep yang dibutuhkan dalam proses komputasi. Misalnya,
+                        sistem bilangan biner dan aljabar Boolean yang berasal dari matematika digunakan dalam
+                        pemrograman dan rangkaian logika komputer. Selain itu, algoritma dan teori graf dalam matematika
+                        juga banyak diterapkan dalam penyusunan program maupun analisis data. Oleh karena itu,
+                        matematika dapat dianggap sebagai pondasi penting yang menopang perkembangan informatika.</p>
+                    <p>Peran informatika sangat luas dan mencakup berbagai aspek kehidupan manusia. Dalam bidang
+                        pendidikan, informatika mempermudah proses belajar melalui e-learning dan akses informasi
+                        digital. Di bidang kesehatan, informatika mendukung pencatatan rekam medis, penelitian, serta
+                        diagnosis berbasis kecerdasan buatan. Pada bidang ekonomi, informatika mendorong perkembangan
+                        e-commerce, perbankan digital, dan sistem pembayaran online. Sementara dalam komunikasi,
+                        informatika memungkinkan manusia saling terhubung dengan cepat melalui media sosial dan berbagai
+                        platform digital. Dengan perannya yang begitu besar, informatika menjadi salah satu ilmu penting
+                        yang mendorong kemajuan peradaban di era modern ini.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- HALAMAN 4: SISTEM DIGITAL -->
+        <!-- ========================================== -->
+        <div id="tugas-sistem-digital" class="hidden">
+            <button onclick="kembaliKeMenu()"
+                class="inline-flex items-center gap-2 text-sage-700 font-bold mb-8 hover:text-sage-500">
+                <i class="fa-solid fa-arrow-left"></i> Kembali ke Daftar Tugas
+            </button>
+            <div class="bg-white p-8 md:p-10 rounded-2xl shadow-sm border border-gray-100 relative">
+                <h1 class="text-3xl font-extrabold text-sage-800 mb-6 text-center font-playfair">Materi: Sistem Digital
+                </h1>
+                <div class="text-gray-700 leading-relaxed text-justify space-y-4">
+                    <h3 class="font-bold text-xl text-sage-700 mt-6 mb-2">APA ITU SISTEM DIGITAL?</h3>
+                    <p>Sistem digital adalah sistem yang bekerja dengan menggunakan data diskrit berupa angka atau
+                        simbol tertentu, biasanya direpresentasikan dalam bilangan biner (0 dan 1). Sistem ini berbeda
+                        dengan sistem analog yang menggunakan nilai kontinu (berubah-ubah secara halus).</p>
+                    <p>Pada sistem digital, semua informasi seperti teks, gambar, suara, dan video diubah menjadi bentuk
+                        bilangan biner agar dapat diproses oleh perangkat digital seperti komputer, laptop, smartphone,
+                        kalkulator, dan perangkat elektronik lainnya.</p>
+
+                    <div class="bg-sage-50 p-4 rounded-xl border border-sage-100 my-4">
+                        <p class="font-bold text-sage-800 mb-2">Angka 0 dan 1 dalam sistem digital mewakili kondisi:</p>
+                        <ul class="list-none space-y-2">
+                            <li><i class="fa-solid fa-circle-xmark text-red-500 mr-2"></i><strong>0</strong> &rarr;
+                                mati, tidak aktif, rendah (OFF)</li>
+                            <li><i class="fa-solid fa-circle-check text-green-500 mr-2"></i><strong>1</strong> &rarr;
+                                hidup, aktif, tinggi (ON)</li>
+                        </ul>
+                    </div>
+                    <p>Karena hanya memiliki dua kondisi, sistem digital lebih stabil, akurat, dan tahan terhadap
+                        gangguan dibandingkan sistem analog.</p>
+
+                    <h3 class="font-bold text-xl text-sage-700 mt-6 mb-2">Komponen Sistem Digital</h3>
+                    <p>Sistem digital terdiri dari beberapa komponen utama, antara lain:</p>
+                    <ul class="list-disc ml-6 space-y-2">
+                        <li><strong>Gerbang Logika (Logic Gates):</strong> Komponen dasar yang memproses input logika
+                            biner menjadi output tertentu. Contoh gerbang logika termasuk AND, OR, dan NOT.</li>
+                        <li><strong>Rangkaian Digital:</strong> Terdiri dari berbagai rangkaian logika yang melakukan
+                            fungsi tertentu, seperti penjumlahan dan pengurangan bilangan biner.</li>
+                        <li><strong>Perangkat Keras (Hardware):</strong> Termasuk unit pengolah pusat (CPU), memori, dan
+                            perangkat periferal seperti printer dan kamera digital.</li>
+                    </ul>
+
+                    <h3 class="font-bold text-xl text-sage-700 mt-6 mb-2">Manfaat Sistem Digital!</h3>
+                    <ul class="list-disc ml-6 space-y-2">
+                        <li><strong>Akurasi tinggi:</strong> Data digital lebih presisi karena tidak mudah terpengaruh
+                            oleh noise atau gangguan.</li>
+                        <li><strong>Mudah disimpan dan diproses:</strong> Data dapat disimpan dalam memori dan diproses
+                            dengan cepat.</li>
+                        <li><strong>Mudah dikirim dan digandakan:</strong> Data digital dapat dikirim melalui internet
+                            tanpa mengurangi kualitas.</li>
+                        <li><strong>Lebih tahan lama:</strong> Data digital tidak mudah rusak seperti kaset atau media
+                            analog.</li>
+                        <li><strong>Efisien dan fleksibel:</strong> Mudah dikembangkan dan disesuaikan dengan kebutuhan
+                            teknologi baru.</li>
+                    </ul>
+
+                    <h3 class="font-bold text-xl text-sage-700 mt-6 mb-2">Fungsi Sistem Digital!</h3>
+                    <ul class="list-disc ml-6 space-y-2">
+                        <li><strong>Pengolahan Data:</strong> Memungkinkan pengolahan data yang efisien dan akurat.</li>
+                        <li><strong>Penyimpanan Data:</strong> Data dapat disimpan dan diakses dengan mudah tanpa
+                            kehilangan kualitas.</li>
+                        <li><strong>Transmisi Data:</strong> Memungkinkan komunikasi data yang lebih baik dan lebih
+                            cepat dibandingkan dengan sistem analog.</li>
+                    </ul>
+
+                    <h3 class="font-bold text-xl text-sage-700 mt-6 mb-2">Cara kerja sistem digital:</h3>
+
+                    <h4 class="font-bold text-lg text-sage-800 mt-4 mb-1">A. Input</h4>
+                    <p>Input adalah data yang dimasukkan ke sistem digital, misalnya:</p>
+                    <ul class="list-disc ml-6 space-y-1">
+                        <li>Mengetik di keyboard</li>
+                        <li>Menekan tombol</li>
+                        <li>Suara melalui mikrofon</li>
+                        <li>Gambar dari kamera</li>
+                    </ul>
+                    <p>Data input ini kemudian diubah menjadi sinyal digital (0 dan 1).</p>
+
+                    <h4 class="font-bold text-lg text-sage-800 mt-4 mb-1">B. Proses</h4>
+                    <p>Data yang sudah dalam bentuk biner diproses oleh CPU (Central Processing Unit) atau rangkaian
+                        logika digital menggunakan:</p>
+                    <ul class="list-disc ml-6 space-y-1">
+                        <li>Gerbang logika (AND, OR, NOT, NAND, NOR, XOR)</li>
+                        <li>Operasi aritmatika dan logika</li>
+                        <li>Sistem bilangan (biner, oktal, desimal, heksadesimal)</li>
+                    </ul>
+                    <div class="bg-gray-50 p-4 rounded-xl border border-gray-200 mt-2 font-mono text-sm">
+                        Contoh: Bilangan biner 11101<br>
+                        = 16 + 8 + 4 + 0 + 1<br>
+                        = 29 (desimal)
+                    </div>
+
+                    <h4 class="font-bold text-lg text-sage-800 mt-4 mb-1">C. Penyimpanan</h4>
+                    <p>Data hasil proses dapat disimpan dalam:</p>
+                    <ul class="list-disc ml-6 space-y-1">
+                        <li>RAM (sementara)</li>
+                        <li>Harddisk / SSD</li>
+                        <li>Flashdisk</li>
+                        <li>Cloud storage</li>
+                    </ul>
+
+                    <h4 class="font-bold text-lg text-sage-800 mt-4 mb-1">D. Output (Keluaran)</h4>
+                    <p>Output adalah hasil yang ditampilkan ke pengguna, seperti:</p>
+                    <ul class="list-disc ml-6 space-y-1">
+                        <li>Tampilan di layar monitor</li>
+                        <li>Suara dari speaker</li>
+                        <li>Cetakan dari printer</li>
+                        <li>Lampu indikator menyala/mati</li>
+                    </ul>
+
+                    <h3 class="font-bold text-xl text-sage-700 mt-8 mb-2 border-t border-gray-200 pt-6">Pendapat;</h3>
+                    <p>Menurut M. Morris Mano dalam bukunya <em>Digital Design</em>, sistem digital adalah sistem yang
+                        bekerja menggunakan nilai diskrit dan direpresentasikan dalam bentuk bilangan biner. Ia
+                        menyatakan bahwa sistem digital memiliki keunggulan dalam hal ketelitian, keandalan, dan
+                        kemudahan dalam pemrosesan data, sehingga sangat cocok digunakan pada perangkat elektronik
+                        modern.</p>
+                    <p>Sementara itu, menurut R. P. Jain, sistem digital memungkinkan proses pengolahan informasi
+                        dilakukan dengan kecepatan tinggi dan tingkat kesalahan yang sangat rendah. Hal ini disebabkan
+                        oleh penggunaan logika biner yang hanya mengenal dua kondisi, yaitu 0 dan 1, sehingga sistem
+                        lebih stabil dibandingkan sistem analog.</p>
+                    <p>Menurut William Stallings, sistem digital merupakan dasar dari sistem komputer modern yang
+                        memungkinkan integrasi antara perangkat keras (hardware) dan perangkat lunak (software). Ia
+                        menekankan bahwa sistem digital berperan penting dalam perkembangan teknologi informasi dan
+                        komunikasi karena mampu mengolah data dalam jumlah besar secara efisien.</p>
+                    <div class="bg-sage-50 p-6 rounded-xl border border-sage-100 mt-4">
+                        <p class="font-bold text-sage-800 mb-2"><i
+                                class="fa-solid fa-quote-left mr-2 text-sage-400"></i>Menurut saya,</p>
+                        <p class="mb-2">Sistem digital merupakan fondasi utama perkembangan teknologi modern. Hampir
+                            seluruh aktivitas manusia saat ini bergantung pada sistem digital, mulai dari pendidikan,
+                            komunikasi, kesehatan, hingga hiburan.</p>
+                        <p class="mb-2">Keunggulan sistem digital yang akurat, cepat, dan efisien membuat pekerjaan
+                            manusia menjadi lebih mudah dan produktif. Namun, di sisi lain, ketergantungan terhadap
+                            sistem digital juga menuntut manusia untuk bijak dalam menggunakannya, terutama dalam
+                            menjaga keamanan data dan privasi.</p>
+                        <p>Dengan memahami sistem digital sejak dini, khususnya di bidang pendidikan informatika, kita
+                            dapat lebih siap menghadapi perkembangan teknologi di masa depan dan memanfaatkannya secara
+                            positif.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- HALAMAN 5: KRIPTOGRAFI -->
+        <!-- ========================================== -->
+        <div id="tugas-kriptografi" class="hidden">
+            <button onclick="kembaliKeMenu()"
+                class="inline-flex items-center gap-2 text-sage-700 font-bold mb-8 hover:text-sage-500">
+                <i class="fa-solid fa-arrow-left"></i> Kembali ke Daftar Tugas
+            </button>
+            <div class="bg-white p-8 md:p-10 rounded-2xl shadow-sm border border-gray-100 relative">
+                <h1 class="text-3xl font-extrabold text-sage-800 mb-6 text-center font-playfair">Materi: Kriptografi
+                </h1>
+                <div class="text-gray-700 leading-relaxed text-justify space-y-4">
+                    <h3 class="font-bold text-xl text-sage-700 mt-6 mb-2">Kriptografi: Seni Menyembunyikan Informasi
+                    </h3>
+                    <p>Kata kriptografi mungkin terdengar asing buat sebagian orang, tapi sebenarnya kita ketemu
+                        kriptografi hampir setiap hari. Mulai dari login akun, chatting di WhatsApp, sampai browsing
+                        pakai HTTPS. Bahkan istilah yang lagi populer seperti cryptocurrency juga berakar dari konsep
+                        ini.</p>
+                    <p>Secara sederhana, kriptografi adalah ilmu untuk menyembunyikan informasi. Informasi yang awalnya
+                        bisa dibaca (plaintext) diubah dengan algoritma tertentu menjadi bentuk yang tidak bisa dipahami
+                        (ciphertext). Tanpa kunci yang tepat, pesan ini sangat sulit—bahkan hampir mustahil—untuk
+                        dipecahkan.</p>
+                    <p>Menariknya, kriptografi bukanlah teknologi baru. Ia sudah ada jauh sebelum komputer diciptakan.
+                    </p>
+
+                    <h3 class="font-bold text-xl text-sage-700 mt-6 mb-2">Awal Mula Kriptografi: Dari Medan Perang</h3>
+                    <p>Salah satu kisah kriptografi paling terkenal datang dari Julius Caesar, seorang jenderal Romawi.
+                        Saat itu, pesan perintah militernya sering dicegat musuh. Agar tidak kecolongan lagi, Caesar
+                        mengubah pesannya dengan cara sederhana: menggeser setiap huruf tiga langkah ke depan dalam
+                        alfabet.</p>
+                    <p>Contohnya, huruf B digeser tiga langkah menjadi E, E menjadi H, dan seterusnya. Hasilnya, pesan
+                        terlihat seperti kumpulan huruf aneh yang membingungkan musuh. Metode ini kemudian dikenal
+                        sebagai Caesar Cipher, salah satu teknik enkripsi tertua dalam sejarah.</p>
+                    <p>Walaupun sederhana, metode ini sangat efektif pada zamannya karena banyak orang masih buta huruf.
+                        Namun sekarang, Caesar Cipher mudah dipecahkan karena hanya memiliki 26 kemungkinan kunci.
+                        Penyadap cukup mencoba semuanya (brute force) sampai menemukan pesan asli.</p>
+
+                    <h3 class="font-bold text-xl text-sage-700 mt-6 mb-2">Scytale: Kriptografi Bangsa Sparta</h3>
+                    <p>Jauh sebelum Caesar, bangsa Sparta sudah menggunakan alat bernama Scytale. Alat ini berupa
+                        tongkat kayu dengan diameter tertentu dan selembar kulit panjang.</p>
+                    <p>Caranya:</p>
+                    <ol class="list-decimal ml-6 space-y-1">
+                        <li>Kulit dililitkan ke tongkat membentuk spiral.</li>
+                        <li>Pesan ditulis secara lurus di atas kulit.</li>
+                        <li>Saat kulit dilepas, tulisan menjadi acak dan tidak terbaca.</li>
+                    </ol>
+
+                    <h3 class="font-bold text-xl text-sage-700 mt-6 mb-2">Telegram Zimmerman (Perang Dunia I)</h3>
+                    <p>Pada tahun 1917, dunia menyadari betapa pentingnya kriptografi lewat Telegram Zimmerman. Ini
+                        adalah pesan rahasia Jerman ke Meksiko yang berisi ajakan aliansi melawan Amerika Serikat.
+                        Sebagai imbalan, Jerman menjanjikan wilayah seperti Texas dan Arizona.</p>
+                    <p>Pesan ini berhasil dipecahkan oleh unit pemecah kode Inggris, Room 40. Ketika Amerika mengetahui
+                        isi pesan tersebut, kemarahan publik meningkat dan menjadi salah satu alasan Amerika Serikat
+                        ikut terjun ke Perang Dunia I.</p>
+                    <p>Satu sandi yang bocor bisa mengubah sejarah sebuah negara.</p>
+
+                    <h3 class="font-bold text-xl text-sage-700 mt-6 mb-2">Mesin Enigma (Perang Dunia II)</h3>
+                    <p>Belajar dari kesalahan, Jerman di Perang Dunia II menggunakan mesin Enigma, mesin enkripsi
+                        elektromekanis yang sangat kompleks. Dengan lebih dari 150 triliun kemungkinan pengaturan,
+                        Enigma dianggap tidak mungkin dipecahkan.</p>
+                    <p>Namun, di Bletchley Park, Alan Turing dan timnya berhasil membuat mesin bernama Bombe untuk
+                        memecahkan sandi Enigma. Hasilnya, Inggris bisa membaca komunikasi rahasia Jerman, menghindari
+                        serangan kapal selam, dan memenangkan banyak pertempuran penting.</p>
+                    <p>Ini membuktikan satu hal: Tidak ada enkripsi buatan manusia yang benar-benar kebal selamanya.</p>
+
+                    <h3 class="font-bold text-xl text-sage-700 mt-6 mb-2">One-Time Pad</h3>
+                    <p>One-Time Pad (OTP) adalah metode enkripsi yang secara teori tidak bisa dipecahkan. Pesan dan
+                        kunci diubah menjadi angka, lalu dijumlahkan untuk menghasilkan ciphertext. Untuk mendekripsi,
+                        prosesnya cukup dibalik dengan pengurangan. Keamanan OTP berasal dari kunci yang benar-benar
+                        acak, panjang kunci yang sama dengan pesan, dan kunci yang hanya digunakan satu kali. Namun,
+                        metode ini jarang dipakai karena sulitnya mendistribusikan kunci rahasia secara aman.</p>
+                    <p>Masalah distribusi kunci akhirnya teratasi pada tahun 1976 melalui konsep public key cryptography
+                        yang diperkenalkan oleh Whitfield Diffie dan Martin Hellman. Mereka mengusulkan penggunaan dua
+                        kunci: private key yang hanya diketahui pemiliknya dan public key yang bisa diketahui semua
+                        orang. Dengan bantuan perhitungan matematika menggunakan bilangan besar dan modulo bilangan
+                        prima, dua pihak dapat membentuk kunci rahasia bersama tanpa pernah mengirimkan kunci tersebut
+                        secara langsung.</p>
+                    <p>Konsep Diffie–Hellman menjadi dasar sistem keamanan digital modern. Teknologi ini digunakan dalam
+                        HTTPS, end-to-end encryption pada aplikasi pesan, VPN, dan berbagai sistem keamanan jaringan
+                        lainnya. Saat pengguna melihat ikon gembok di browser, itu menandakan koneksi telah dilindungi
+                        oleh enkripsi berbasis prinsip ini.</p>
+                    <p>Sebagai penutup, kriptografi kini tidak hanya digunakan untuk kepentingan militer, tetapi juga
+                        untuk melindungi data dan privasi pribadi. Meski kemunculan komputer kuantum berpotensi
+                        mengancam metode enkripsi saat ini, kriptografi akan terus berkembang mengikuti tantangan zaman.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- HALAMAN 6: ANALISIS FILM -->
+        <!-- ========================================== -->
+        <div id="tugas-imitation-game" class="hidden">
+            <button onclick="kembaliKeMenu()"
+                class="inline-flex items-center gap-2 text-sage-700 font-bold mb-8 hover:text-sage-500">
+                <i class="fa-solid fa-arrow-left"></i> Kembali ke Daftar Tugas
+            </button>
+            <div class="bg-white p-8 md:p-10 rounded-2xl shadow-sm border border-gray-100 relative">
+                <h1 class="text-3xl font-extrabold text-sage-800 mb-6 text-center font-playfair">Analisis Film: The
+                    Imitation Game</h1>
+                <div class="text-gray-700 leading-relaxed text-justify space-y-4">
+                    <p>Film <em>The Imitation Game</em> menceritakan perjalanan Alan Turing, seorang matematikawan
+                        Inggris yang direkrut untuk memecahkan sandi rahasia Jerman bernama Enigma pada masa Perang
+                        Dunia II.</p>
+                    <p>Tokoh Alan Turing digambarkan sebagai pribadi yang sangat cerdas tapi sulit berkomunikasi dengan
+                        orang lain. Ia lebih percaya pada logika daripada perasaan, lalu sering bertentangan dengan
+                        rekan satu timnya di Bletchley Park. Film bukan hanya bagaimana memecahkan Enigma, tetapi juga
+                        bagaimana Turing berjuang agar idenya diterima, terlebih dimana adegan ketika ia memutuskan
+                        membangun mesin pemecah kode.</p>
+                    <p>Lalu ada bagian dimana setelah berhasil membaca pesan Jerman, tim tidak bisa langsung
+                        menyelamatkan semua target karena takut musuh menyadari bahwa Enigma telah ditembus. Bagian ini
+                        membuat penonton memahami bahwa ilmu pengetahuan sering berhadapan dengan pilihan sulit antara
+                        kemanusiaan dan strategi.</p>
+
+                    <h3 class="font-bold text-xl text-sage-700 mt-6 mb-2">Korelasi dengan Kriptografi</h3>
+
+                    <h4 class="font-bold text-lg text-sage-800 mt-4 mb-1">1. Mesin Enigma sebagai Alat Enkripsi</h4>
+                    <p>Enigma adalah mesin elektromekanik yang berfungsi mengubah pesan biasa menjadi pesan tersandi.
+                        Cara kerjanya menggunakan beberapa komponen:</p>
+                    <ul class="list-disc ml-6 space-y-1">
+                        <li>Rotor berputar, yang mengacak huruf setiap kali tombol ditekan</li>
+                        <li>Plugboard, yang menukar pasangan huruf untuk menambah tingkat kerumitan</li>
+                        <li>Kunci harian, yaitu pengaturan awal mesin yang berubah setiap hari</li>
+                    </ul>
+                    <p>Karena kombinasi rotor dan plugboard sangat banyak, Enigma menghasilkan jutaan kemungkinan sandi.
+                        Dalam film diperlihatkan bahwa tanpa mengetahui pengaturan awal mesin, pesan seperti “serang
+                        besok pagi” bisa berubah menjadi deretan huruf yang sama sekali tidak bermakna. Inilah contoh
+                        nyata fungsi alat kriptografi: menjaga kerahasiaan informasi agar hanya pengirim dan penerima
+                        yang bisa memahaminya.</p>
+
+                    <h4 class="font-bold text-lg text-sage-800 mt-4 mb-1">2. Mesin Bombe/Christopher sebagai Alat
+                        Kriptanalisis</h4>
+                    <p>Untuk melawan Enigma, Turing tidak menggunakan cara manual, melainkan menciptakan mesin pemecah
+                        kode yang dalam film dinamai Christopher, dan dalam sejarah dikenal sebagai Bombe. Alat ini
+                        bekerja dengan prinsip:</p>
+                    <ul class="list-disc ml-6 space-y-1">
+                        <li>mencoba banyak kemungkinan kunci secara otomatis</li>
+                        <li>mencocokkan hasilnya dengan pola bahasa Jerman</li>
+                        <li>mengeliminasi kombinasi yang tidak mungkin</li>
+                    </ul>
+                    <p>Mesin ini dapat melakukan pekerjaan yang tidak sanggup dilakukan manusia karena kecepatan dan
+                        ketelitiannya. Dari sini terlihat bahwa kriptografi membutuhkan perangkat keras selain kemampuan
+                        berpikir. Christopher dapat dianggap sebagai bentuk awal komputer yang dirancang khusus untuk
+                        memecahkan masalah kriptografi.</p>
+
+                    <h4 class="font-bold text-lg text-sage-800 mt-4 mb-1">3. Hubungan dengan Alat Kriptografi Modern
+                    </h4>
+                    <p>Alat-alat dalam film memiliki kesamaan fungsi dengan teknologi yang kita gunakan saat ini, antara
+                        lain:</p>
+                    <ul class="list-disc ml-6 space-y-1">
+                        <li>Enigma &approx; aplikasi enkripsi modern yang mengamankan pesan chat dan email</li>
+                        <li>Bombe &approx; komputer yang menjalankan algoritma dekripsi atau keamanan siber</li>
+                        <li>kunci harian Enigma &approx; password, PIN, atau private key pada sistem digital</li>
+                    </ul>
+                    <p>Artinya, walaupun bentuknya berbeda, prinsip alat kriptografi tidak berubah: ada perangkat untuk
+                        mengunci informasi dan ada perangkat untuk membuka atau mengujinya.</p>
+
+                    <h3 class="font-bold text-xl text-sage-700 mt-6 mb-2">Kesimpulan</h3>
+                    <p>Dari analisis film <em>The Imitation Game</em>, dapat dipahami bahwa keberhasilan memecahkan
+                        Enigma merupakan hasil perpaduan antara logika matematika, kreativitas teknologi, dan ketekunan
+                        manusia. Film ini menggambarkan secara jelas bagaimana proses enkripsi–dekripsi, pencarian pola,
+                        serta penggunaan mesin menjadi inti dari kriptografi.</p>
+                    <p>Korelasi film dengan kriptografi terlihat pada cara pesan disandikan, upaya kriptanalisis yang
+                        dilakukan Turing, dan penggunaan mesin sebagai alat komputasi. Semua itu sejalan dengan konsep
+                        keamanan informasi yang dipelajari saat ini.</p>
+                    <p>Melalui film ini aku menyimpulkan bahwa kriptografi memiliki peran besar dalam sejarah dan
+                        perkembangan teknologi modern. Tanpa pemecahan Enigma, jalannya perang mungkin berbeda, dan
+                        tanpa gagasan Turing, komputer serta sistem enkripsi masa kini mungkin tidak akan berkembang
+                        secepat sekarang. Film ini mengajarkan bahwa melindungi informasi adalah bagian penting dari
+                        kehidupan manusia, baik di masa perang maupun di era digital.</p>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <script>
+        function bukaTugas(idTugas) {
+            document.getElementById('menu-utama').classList.add('hidden');
+            const tugasIds = ['artikel-keuangan', 'artikel-informatika', 'sistem-digital', 'kriptografi', 'imitation-game'];
+            tugasIds.forEach(id => {
+                const el = document.getElementById('tugas-' + id);
+                if (el) {
+                    el.classList.add('hidden');
+                    el.classList.remove('fade-in');
+                }
+            });
+
+            const target = document.getElementById('tugas-' + idTugas);
+            if (target) {
+                target.classList.remove('hidden');
+                target.classList.add('fade-in');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function kembaliKeMenu() {
+            const tugasIds = ['artikel-keuangan', 'artikel-informatika', 'sistem-digital', 'kriptografi', 'imitation-game'];
+            tugasIds.forEach(id => {
+                const el = document.getElementById('tugas-' + id);
+                if (el) {
+                    el.classList.add('hidden');
+                    el.classList.remove('fade-in');
+                }
+            });
+
+            const menu = document.getElementById('menu-utama');
+            if (menu) {
+                menu.classList.remove('hidden');
+                menu.classList.add('fade-in');
+            }
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+
+    <script>
+        // Script for Dark Mode Toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        const themeIcon = document.getElementById('theme-icon');
+        const body = document.body;
+
+        // Cek preferensi sebelumnya
+        if (localStorage.getItem('theme') === 'dark') {
+            body.classList.add('dark-mode');
+            themeIcon.classList.replace('fa-moon', 'fa-sun');
+        }
+
+        themeToggle.addEventListener('click', () => {
+            body.classList.toggle('dark-mode');
+            if (body.classList.contains('dark-mode')) {
+                themeIcon.classList.replace('fa-moon', 'fa-sun');
+                localStorage.setItem('theme', 'dark');
+            } else {
+                themeIcon.classList.replace('fa-sun', 'fa-moon');
+                localStorage.setItem('theme', 'light');
+            }
+        });
+    </script>
+</body>
+
+</html>
